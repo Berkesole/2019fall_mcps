@@ -110,7 +110,60 @@ DONE:
     MOV [SI+200H],DX 
     INC DI 
     JMP CTRLDI 
+CMPC: 
+    CMP C,0 
+    JBE NEXT 
+    INC M 
+    MOV AX,C 
+    MOV [SI+2+200H],AX 
+NEXT: 
+    INC I 
+    CMP CX,0 
+    JNG IF0 
+    LOOP CTRLI 
+IF0: 
+    MOV DI,M 
+    RET 
+    FRACTOR ENDP 
 
+OUTPUT PROC NEAR ;输出---------------------------
+C2: 
+    MOV SI,DI 
+    SHL SI,1 
+    MOV BX,[SI+200H] 
+
+BID PROC 
+    MOV CX,10000 
+    MOV AX,BX 
+    MOV DX,0 
+    DIV CX 
+    MOV BX,DX 
+    MOV CX,1000 
+    CALL DDIV 
+    MOV CX,100 
+    CALL DDIV 
+    MOV CX,10 
+    CALL DDIV 
+    MOV CX,1 
+    CALL DDIV 
+    RET
+BID ENDP
+
+DDIV PROC 
+    MOV AX,BX 
+    MOV DX,0 
+    DIV CX 
+    MOV BX,DX;余数 
+    MOV DL,AL 
+    ADD DL,30H;转化为ASCII码输出 
+    MOV AH,02H 
+    INT 21H 
+    RET 
+DDIV ENDP 
+    
+    RET 
+    
+    OUTPUT ENDP
     
 
 
