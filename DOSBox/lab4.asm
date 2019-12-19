@@ -79,6 +79,38 @@ OK:
     SHURU ENDP 
 
 
+
+FRACTOR PROC NEAR;子程序------------------------
+    MOV CX,N ;N,要求·阶乘的数 
+    MOV I, 1 ;循环计数从一到n
+    MOV M, 0  
+    MOV DI,0 
+    MOV SI,DI 
+    SHL SI,1 
+    MOV WORD PTR [SI+200H],1 
+CTRLI: 
+    MOV C, 0  
+    MOV DI,0 
+CTRLDI: 
+    CMP DI,M 
+    JA CMPC 
+DONE: 
+    MOV SI,DI 
+    SHL SI,1 
+    MOV AX,[SI+200H] 
+    MOV BX,I 
+    MUL BX 
+    ADD AX,C 
+    ADC DX,0;高16位保存在DX 
+    MOV BX,10000 
+    DIV BX 
+    MOV C,AX 
+    MOV SI,DI 
+    SHL SI,1 
+    MOV [SI+200H],DX 
+    INC DI 
+    JMP CTRLDI 
+
     
 
 
